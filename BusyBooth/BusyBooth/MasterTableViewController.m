@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 #import "MasterTableViewController.h"
 
-#import "CheckInViewController.h"
 #import "MainViewController.h"
 #import "PastPollingTableViewController.h"
 #import "PollingPlaceViewController.h"
@@ -20,7 +19,6 @@ typedef NS_ENUM(NSUInteger, MasterTableViewRowType) {
   MasterTableViewPollingPlace,
   MasterTableViewRowTypeHome,
   MasterTableViewPastPolling,
-  MasterTableViewRowTypeCheckIn,
   MasterTableViewRowTypeCount,
 };
 
@@ -61,14 +59,10 @@ typedef NS_ENUM(NSUInteger, MasterTableViewRowType) {
   MainViewController *mainVC = [[MainViewController alloc] init];
   PollingPlaceViewController *pollVC = [[PollingPlaceViewController alloc] init];
   PastPollingTableViewController *pastVC = [[PastPollingTableViewController alloc] init];
-  CheckInViewController *checkInVC = [[CheckInViewController alloc] init];
 
   pollVC.masterVC = self;
 
-  self.viewControllerArray = @[ pollVC, mainVC, pastVC, checkInVC];
-
-  //    self.iconArray = @[@"Micro-25.png", @"Folder-25.png", @"Search-25.png",
-  //    @"Settings-25.png", @"Exit-25.png"];
+  self.viewControllerArray = @[ pollVC, mainVC, pastVC];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell
@@ -98,35 +92,23 @@ typedef NS_ENUM(NSUInteger, MasterTableViewRowType) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-  static NSString *cellIdentifier = @"Cell";
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    static NSString *cellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
-  if (!cell) {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                  reuseIdentifier:cellIdentifier];
-  }
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                      reuseIdentifier:cellIdentifier];
+    }
 
-  if ([[[NSUserDefaults standardUserDefaults] objectForKey:IsLoggedIn] boolValue]) {
     if (indexPath.row < MasterTableViewRowTypeCount) {
-      UIViewController *currViewController = [self.viewControllerArray objectAtIndex:indexPath.row];
-      cell.textLabel.text = currViewController.title;
+        UIViewController *currViewController = [self.viewControllerArray objectAtIndex:indexPath.row];
+        cell.textLabel.text = currViewController.title;
     }
-  } else {
-    if (indexPath.row == 3) {
-      cell.textLabel.text = @"Go Back";
-    } else if (indexPath.row < MasterTableViewRowTypeCount) {
-      UIViewController *currViewController = [self.viewControllerArray objectAtIndex:indexPath.row];
-      cell.textLabel.text = currViewController.title;
+    if (indexPath.row == self.currRow) {
+        cell.contentView.backgroundColor = [UIColor lightGrayColor];
+    } else {
+        cell.contentView.backgroundColor = [UIColor whiteColor];
     }
-  }
-  if (indexPath.row == self.currRow) {
-    cell.contentView.backgroundColor = [UIColor lightGrayColor];
-  } else {
-    cell.contentView.backgroundColor = [UIColor whiteColor];
-  }
-  // cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-  // cell.imageView.image = [UIImage imageNamed:[self.iconArray
-  // objectAtIndex:indexPath.row]];
 
   return cell;
 }

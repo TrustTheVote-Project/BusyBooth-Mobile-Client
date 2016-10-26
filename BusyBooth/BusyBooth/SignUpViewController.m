@@ -96,16 +96,16 @@
   [self.addressField setDelegate:self];
   [self.view addSubview:self.addressField];
 
-  UIButton *nologinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-  [nologinButton setFrame:CGRectMake(0, 0, 0, 0)];
-  [nologinButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-  [nologinButton setTitle:@"Continue without signup" forState:UIControlStateNormal];
-  [nologinButton sizeToFit];
-  [nologinButton setCenter:CGPointMake(width / 2, height * 25 / 28)];
-  [nologinButton addTarget:self
-                    action:@selector(noLogin)
-          forControlEvents:UIControlEventTouchUpInside];
-  [self.view addSubview:nologinButton];
+//  UIButton *nologinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//  [nologinButton setFrame:CGRectMake(0, 0, 0, 0)];
+//  [nologinButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//  [nologinButton setTitle:@"Continue without signup" forState:UIControlStateNormal];
+//  [nologinButton sizeToFit];
+//  [nologinButton setCenter:CGPointMake(width / 2, height * 25 / 28)];
+//  [nologinButton addTarget:self
+//                    action:@selector(noLogin)
+//          forControlEvents:UIControlEventTouchUpInside];
+//  [self.view addSubview:nologinButton];
 
   UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
       initWithTarget:self
@@ -187,7 +187,7 @@
   NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 
-  [request setURL:[NSURL URLWithString:@"http://localhost:5000/validate_user"]];
+  [request setURL:[NSURL URLWithString:@"https://busy-booth-app.herokuapp.com/validate_user"]];
   [request setHTTPMethod:@"POST"];
   [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
   [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -201,6 +201,9 @@
           NSDictionary *loginSuccessful = [NSJSONSerialization JSONObjectWithData:data
                                                                           options:kNilOptions
                                                                             error:&error];
+            
+            NSLog(@"%@", loginSuccessful);
+            
           if ([[loginSuccessful objectForKey:@"code"] integerValue] == 1) {
             dispatch_async(dispatch_get_main_queue(), ^{ [SVProgressHUD showErrorWithStatus:
                 @"Signup Failed. Please check that you have entered your information correctly."];
@@ -209,9 +212,11 @@
           } else {
               NSString *address = [[loginSuccessful objectForKey:@"data"] objectForKey:@"address"];
               NSString *boothZip = [[loginSuccessful objectForKey:@"data"] objectForKey:@"zip"];
+              NSString *boothID = [[loginSuccessful objectForKey:@"data"] objectForKey:@"id"];
               
               [[NSUserDefaults standardUserDefaults] setObject:address forKey:@"boothAddress"];
               [[NSUserDefaults standardUserDefaults] setObject:boothZip forKey:@"boothZip"];
+              [[NSUserDefaults standardUserDefaults] setObject:boothID forKey:@"boothID"];
               
             dispatch_async(dispatch_get_main_queue(), ^{
               [SVProgressHUD showSuccessWithStatus: @"Registered Successfully! Proceeding to app."];

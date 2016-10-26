@@ -14,6 +14,8 @@
 
 @interface PastPollingTableViewController ()
 
+@property (nonatomic, strong) NSArray* hours_array;
+
 @end
 
 @implementation PastPollingTableViewController
@@ -50,9 +52,7 @@
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    [self getBoothId];
-    
-    
+    [self getHours];
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -84,11 +84,14 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     int time = 60;
     int wait = 0;
+    
+    // NSLog(@"%@", self.hours_array);
+    
     if(indexPath.row != 0) {
         long i = indexPath.row - 1;
-        if(i < self.waitTimesKeys.count) {
-            time = [self.waitTimesKeys[i] intValue];
-            wait = [[self.waitTimes objectForKey:self.waitTimesKeys[i]] intValue];
+        if(i < self.hours_array.count) {
+            time = [[self.hours_array[i] objectForKey:@"hour"] intValue];
+            wait = [[self.hours_array[i] objectForKey:@"time"] intValue];
         }
     }
     
@@ -109,24 +112,9 @@
         return cell;
         
     } else if(indexPath.row == 1) {
-        static NSString *cellIdentifier = @"MainCell";
-        LargeWaitTime *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-        
-        if (!cell) {
-            cell = [[LargeWaitTime alloc] initWithReuseIdentifier:cellIdentifier time:time wait:wait];
-        }
-
-        return cell;
-        
+        return [[LargeWaitTime alloc] initWithReuseIdentifier:nil time:time wait:wait];
     } else {
-        static NSString *cellIdentifier = @"WaitTimeCell";
-        SmallWaitTime *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-        
-        if (!cell) {
-            cell = [[SmallWaitTime alloc] initWithReuseIdentifier:cellIdentifier time:time wait:wait];
-        }
-        
-        return cell;
+        return [[SmallWaitTime alloc] initWithReuseIdentifier:nil time:time wait:wait];
     }
 }
 
@@ -143,98 +131,45 @@
     
 }
 
-- (void)getBoothId
-{
-//    NSString *post = @"";
-//    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-//    NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
-//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-//    
-//    NSString *domain = @"localhost:5000";
-//    NSString *phoneNumber = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"curr-number"]];
-//    NSString *url = [NSString stringWithFormat:@"http://%@/lookup/%@", domain, phoneNumber];
-//    
-//    [request setURL:[NSURL URLWithString:url]];
-//    [request setHTTPMethod:@"GET"];
-//    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-//    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-//    [request setHTTPBody:postData];
-//    
-//    NSURLSession *session = [NSURLSession sharedSession];
-//    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
-//                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
-//                                      {
-//                                          NSDictionary *user = [NSJSONSerialization JSONObjectWithData:data
-//                                                                                                options:kNilOptions
-//                                                                                                  error:&error];
-//                                          NSLog(@"%@", user);
-//                                          self.boothId = 1;
-//                                          if([[user objectForKey:@"code"] integerValue] == 0) {
-//                                              dispatch_async(dispatch_get_main_queue(), ^{
-//                                                  //[APPDELEGATE presentSWController];
-//                                                  self.boothId = [[user objectForKey:@"booth_id"] intValue];
-//                                              });
-//                                          } else if([[user objectForKey:@"code"] integerValue] == 1) {
-//                                              dispatch_async(dispatch_get_main_queue(), ^{
-//                                                  [SVProgressHUD showErrorWithStatus:@"Could not find your location. Are you logged in?"];
-//                                              });
-//                                          } else {
-//                                              dispatch_async(dispatch_get_main_queue(), ^{
-//                                                  [SVProgressHUD showErrorWithStatus:@"Error loading location information. Try again later"];
-//                                              });
-//                                          }
-//                                          [self getTimes];
-//                                      }];
-//    [dataTask resume];
-}
-
-- (void)getTimes
-{
+- (void)getHours {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [SVProgressHUD showWithStatus:@"Loading Wait Times!"];
+    });
     NSString *post = @"";
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     
-    NSString *domain = @"localhost:5000";
-    NSString *url = [NSString stringWithFormat:@"http://%@/history_wait/%d", domain, self.boothId];
-    
+    NSString *url = [NSString stringWithFormat:@"https://busy-booth-app.herokuapp.com/history_wait/%@",
+                     [[NSUserDefaults standardUserDefaults] objectForKey:@"boothID"]];
+
     [request setURL:[NSURL URLWithString:url]];
     [request setHTTPMethod:@"GET"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:postData];
-    
+
     NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
-                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
-                                      {
-                                          NSDictionary *times = [NSJSONSerialization JSONObjectWithData:data
-                                                                                                    options:kNilOptions
-                                                                                                    error:&error];
-                                          NSLog(@"%@", times);
-                                          if([[times objectForKey:@"code"] integerValue] == 0) {
-                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                  //[APPDELEGATE presentSWController];
-                                                  self.waitTimesKeys = [[NSMutableArray alloc] initWithCapacity:6];
-                                                  self.waitTimes = [[NSMutableDictionary alloc] initWithCapacity:6];
-                                                  
-                                                  NSArray *arr = [times objectForKey:@"data"];
-                                                  for(NSDictionary *element in arr) {
-                                                      [self.waitTimes setValue:[element objectForKey:@"time"] forKey:[element objectForKey:@"minute_start"]];
-                                                      [self.waitTimesKeys addObject:[element objectForKey:@"minute_start"]];
-                                                  }
-                                                  [self.tableView reloadData];
-                                              });
-                                          } else if([[times objectForKey:@"code"] integerValue] == 2) {
-                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                  [SVProgressHUD showErrorWithStatus:@"Could not find polling booth. Try again later."];
-                                              });
-                                          } else {
-                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                  [SVProgressHUD showErrorWithStatus:@"Could not load times. Try again later"];
-                                              });
-                                          }
-                                      }];
+    NSURLSessionDataTask *dataTask =
+        [session dataTaskWithRequest:request
+                   completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            NSDictionary *hours = [NSJSONSerialization JSONObjectWithData:data
+                                                                options:kNilOptions
+                                                                  error:&error];
+
+            if([[hours objectForKey:@"code"] integerValue] == 0) {
+                self.hours_array = [hours objectForKey:@"data"];
+                [self.tableView reloadData];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [SVProgressHUD dismiss];
+                });
+            } else {
+              dispatch_async(dispatch_get_main_queue(), ^{
+                  [SVProgressHUD dismiss];
+                  [SVProgressHUD showErrorWithStatus:@"Error loading information. Please try again later."];
+              });
+            }
+          }];
     [dataTask resume];
 }
 
