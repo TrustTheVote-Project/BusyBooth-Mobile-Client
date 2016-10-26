@@ -8,7 +8,6 @@
 
 #import <MapKit/MapKit.h>
 #import "BFPaperButton.h"
-#import "CheckIns.h"
 #import "MainViewController.h"
 
 @interface MainViewController ()<CLLocationManagerDelegate, MKMapViewDelegate>
@@ -29,7 +28,7 @@
 - (id)init {
   self = [super init];
   if (self) {
-    self.title = @"Busy Booth";
+    self.title = @"Directions";
   }
   return self;
 }

@@ -17,6 +17,8 @@
 @property(nonatomic) int heading;
 @property(nonatomic, strong) UILabel *addressLabel;
 
+@property(nonatomic, strong) UITextField *addTimeField;
+
 @end
 
 @implementation PollingPlaceViewController
@@ -32,72 +34,141 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-  self.view.backgroundColor = [UIColor colorWithRed:240.0 / 256 green:240.0 / 256
+    self.view.backgroundColor = [UIColor colorWithRed:240.0 / 256 green:240.0 / 256
                                                blue:242.0 / 256 alpha:1.0];
-  [self.navigationController.navigationBar setTitleTextAttributes:@{
+    [self.navigationController.navigationBar setTitleTextAttributes:@{
     NSForegroundColorAttributeName : [UIColor whiteColor]
-  }];
+    }];
 
-  self.revealController = [self revealViewController];
-  [self.revealController panGestureRecognizer];
-  [self.revealController tapGestureRecognizer];
+    self.revealController = [self revealViewController];
+    [self.revealController panGestureRecognizer];
+    [self.revealController tapGestureRecognizer];
 
-  UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc]
+    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc]
       initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
               style:UIBarButtonItemStylePlain
              target:self.revealController
              action:@selector(revealToggle:)];
-  self.navigationItem.leftBarButtonItem = revealButtonItem;
-  self.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
-  self.navigationController.navigationBar.barTintColor = mainColor;
+    self.navigationItem.leftBarButtonItem = revealButtonItem;
+    self.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.barTintColor = mainColor;
 
-  CGFloat width = self.view.frame.size.width;
-  CGFloat height = self.view.frame.size.height;
+    CGFloat width = self.view.frame.size.width;
+    CGFloat height = self.view.frame.size.height;
 
-  UIImageView *pollingPlaceImage =
+    UIImageView *pollingPlaceImage =
     [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"GardnerPhoto.png"]];
-  [pollingPlaceImage setFrame:CGRectMake(0, 0, 320, 181)];
-  [pollingPlaceImage setCenter:CGPointMake(width / 2, height * 1.9 / 7)];
-  [pollingPlaceImage setBackgroundColor:[UIColor clearColor]];
-  [self.view addSubview:pollingPlaceImage];
+    [pollingPlaceImage setFrame:CGRectMake(0, 0, 320, 181)];
+    [pollingPlaceImage setCenter:CGPointMake(width / 2, height * 1.9 / 7)];
+    [pollingPlaceImage setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:pollingPlaceImage];
 
-  self.addressLabel =
+    self.addressLabel =
     [[UILabel alloc] initWithFrame:CGRectMake(width / 5, height * 3 / 7, 200, 200)];
-  self.addressLabel.numberOfLines = 4;
-  self.addressLabel.adjustsFontSizeToFitWidth = YES;
-  self.addressLabel.minimumScaleFactor = 10.0f / 12.0f;
-  self.addressLabel.clipsToBounds = YES;
-  self.addressLabel.textColor = [UIColor blackColor];
-  self.addressLabel.textAlignment = NSTextAlignmentCenter;
-  [self.view addSubview:self.addressLabel];
+    self.addressLabel.numberOfLines = 4;
+    self.addressLabel.adjustsFontSizeToFitWidth = YES;
+    self.addressLabel.minimumScaleFactor = 10.0f / 12.0f;
+    self.addressLabel.clipsToBounds = YES;
+    self.addressLabel.textColor = [UIColor blackColor];
+    self.addressLabel.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:self.addressLabel];
 
-  [self updateAddressLabel];
+    [self updateAddressLabel];
 
-  UIButton *viewWaitTimeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-  [viewWaitTimeButton setFrame:CGRectMake(0, 0, 275, 40)];
-  [viewWaitTimeButton setTitleColor:mainColor forState:UIControlStateNormal];
-  [viewWaitTimeButton setBackgroundColor:[UIColor whiteColor]];
-  [viewWaitTimeButton setTitle:@"View Wait Time" forState:UIControlStateNormal];
-  [viewWaitTimeButton setCenter:CGPointMake(width / 2, height * 6 / 7)];
-  [viewWaitTimeButton addTarget:self
+    UIButton *viewWaitTimeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [viewWaitTimeButton setFrame:CGRectMake(0, 0, 275, 40)];
+    [viewWaitTimeButton setTitleColor:mainColor forState:UIControlStateNormal];
+    [viewWaitTimeButton setBackgroundColor:[UIColor whiteColor]];
+    [viewWaitTimeButton setTitle:@"View Wait Time" forState:UIControlStateNormal];
+    [viewWaitTimeButton setCenter:CGPointMake(width / 2, height * 6 / 7 - 0.6 * height / 7)];
+    [viewWaitTimeButton addTarget:self
                          action:@selector(presentPollTimes)
                forControlEvents:UIControlEventTouchUpInside];
-  viewWaitTimeButton.layer.cornerRadius = 8;
-  [self.view addSubview:viewWaitTimeButton];
+    viewWaitTimeButton.layer.cornerRadius = 8;
+    [self.view addSubview:viewWaitTimeButton];
 
-  UIButton *viewDrivingDirectionsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-  [viewDrivingDirectionsButton setFrame:CGRectMake(0, 0, 275, 40)];
-  [viewDrivingDirectionsButton setTitleColor:mainColor forState:UIControlStateNormal];
-  [viewDrivingDirectionsButton setBackgroundColor:[UIColor whiteColor]];
-  [viewDrivingDirectionsButton setTitle:@"Get Driving Directions"
+    UIButton *viewDrivingDirectionsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [viewDrivingDirectionsButton setFrame:CGRectMake(0, 0, 275, 40)];
+    [viewDrivingDirectionsButton setTitleColor:mainColor forState:UIControlStateNormal];
+    [viewDrivingDirectionsButton setBackgroundColor:[UIColor whiteColor]];
+    [viewDrivingDirectionsButton setTitle:@"Get Driving Directions"
                                forState:UIControlStateNormal];
-  [viewDrivingDirectionsButton setCenter:CGPointMake(width / 2, height * 6 / 7 + 0.6 * height / 7)];
-  [viewDrivingDirectionsButton addTarget:self
+    [viewDrivingDirectionsButton setCenter:CGPointMake(width / 2, height * 6 / 7)];
+    [viewDrivingDirectionsButton addTarget:self
                                   action:@selector(getDrivingDirections)
                         forControlEvents:UIControlEventTouchUpInside];
-  viewDrivingDirectionsButton.layer.cornerRadius = 8;
-  [self.view addSubview:viewDrivingDirectionsButton];
+    viewDrivingDirectionsButton.layer.cornerRadius = 8;
+    [self.view addSubview:viewDrivingDirectionsButton];
+    
+    UIButton *logTimeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [logTimeButton setFrame:CGRectMake(0, 0, 275, 40)];
+    [logTimeButton setTitleColor:mainColor forState:UIControlStateNormal];
+    [logTimeButton setBackgroundColor:[UIColor whiteColor]];
+    [logTimeButton setTitle:@"Submit Elapsed Time"
+                                 forState:UIControlStateNormal];
+    [logTimeButton setCenter:CGPointMake(width / 2, height * 6 / 7 + 0.6 * height / 7)];
+    [logTimeButton addTarget:self
+                                    action:@selector(submitLoggingTime)
+                          forControlEvents:UIControlEventTouchUpInside];
+    logTimeButton.layer.cornerRadius = 8;
+    [self.view addSubview:logTimeButton];
 }
+
+- (void) submitLoggingTime {
+    UIAlertView *addTime =
+    [[UIAlertView alloc] initWithTitle:@"How long did you wait at your polling place?"
+                               message:@"NOTE: This is final and you will not be able to change your submission."
+                              delegate:self
+                     cancelButtonTitle:@"Cancel"
+                     otherButtonTitles:@"Submit", nil];
+    addTime.alertViewStyle = UIAlertViewStylePlainTextInput;
+    
+    _addTimeField = [addTime textFieldAtIndex:0];
+    [_addTimeField resignFirstResponder];
+    [_addTimeField setKeyboardType:UIKeyboardTypePhonePad];
+    [_addTimeField becomeFirstResponder];
+    
+    [addTime show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        
+        NSLog(@"%@", self.addTimeField.text);
+        NSString *post = [NSString stringWithFormat:@"elapsed=%@", self.addTimeField.text];
+        NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+        NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+        
+        NSString *urlString = [NSString stringWithFormat:@"https://busy-booth-app.herokuapp.com/log_time/%@",
+                               [[NSUserDefaults standardUserDefaults] objectForKey:@"boothID"]];
+        [request setURL:[NSURL URLWithString: urlString]];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:postData];
+        
+        NSURLSession *session = [NSURLSession sharedSession];
+        NSURLSessionDataTask *dataTask =
+        [session dataTaskWithRequest:request
+                   completionHandler:^(NSData *data, NSURLResponse *response,
+                                       NSError *error) {
+                       
+                       NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:data
+                                                                               options:kNilOptions
+                                                                                 error:&error];
+                       NSLog(@"%@", dataDic);
+                       if([[dataDic objectForKey:@"code"] intValue] == 0) {
+                           dispatch_async(dispatch_get_main_queue(), ^{
+                               [SVProgressHUD showSuccessWithStatus: @"Your time has been recorded! \n Thank you for your contribution!"];
+                               // TODO: Make the button disappear if you aren't an admin.
+                           });
+                       }
+                   }];
+        [dataTask resume];
+    }
+}
+
 
 
 - (void)updateAddressLabel {

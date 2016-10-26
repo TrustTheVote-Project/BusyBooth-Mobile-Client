@@ -8,19 +8,25 @@
 
 #import "SmallWaitTime.h"
 
+@interface SmallWaitTime ()
+
+@property (nonatomic, strong) UILabel *descriptionLabel;
+@property (nonatomic, strong) UILabel *minutesLabel;
+@property (nonatomic, strong) UILabel *timeLabel;
+@property (nonatomic, strong) UIView *lineView;
+@property (nonatomic, strong) UIImageView *gaugeView;
+
+@end
+
 @implementation SmallWaitTime
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier time:(int)time wait:(int)wait {
-    self = [super initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier time:time wait:wait];
+    self = [super initWithStyle:UITableViewCellStyleValue1
+                reuseIdentifier:reuseIdentifier
+                           time:time
+                           wait:wait];
+
     if (self) {
-        // configure control(s)
         self.descriptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 6, 300, 30)];
         self.descriptionLabel.textColor = [self foregroundColor];
         self.descriptionLabel.font = [UIFont fontWithName:@"Arial" size:12.0f];
@@ -48,11 +54,27 @@
         self.gaugeView = [[UIImageView alloc] initWithImage:[self gaugeImage]];
         self.gaugeView.frame = CGRectOffset(self.gaugeView.frame, (self.frame.size.width - self.gaugeView.frame.size.width)/2, 5);
         //[self addSubview:self.gaugeView];
-
         
-        self.descriptionLabel.text = [NSString stringWithFormat:@"%@", [self timeString]];
-        self.timeLabel.text = [NSString stringWithFormat:@"%d", [self wait]];
-        // 60 -> 42
+        NSString *time_string;
+        if(time == 0) {
+            time_string = @"12:30 AM";
+        } else if(time < 12) {
+            time_string = [NSString stringWithFormat:@"%d:30 AM", time];
+        } else if(time == 12) {
+            time_string = @"12:30 PM";
+        } else {
+            time_string = [NSString stringWithFormat:@"%d:30 PM", time % 12];
+        }
+        self.descriptionLabel.text = time_string;
+        
+        NSString *desc_string;
+        if (self.wait == -1) {
+            desc_string = @"n/a";
+            self.timeLabel.font = [UIFont fontWithName:@"Arial" size:24.0f];
+        } else {
+            desc_string = [NSString stringWithFormat:@"%d", self.wait];
+        }
+        self.timeLabel.text = desc_string;
     }
     
     return self;

@@ -10,18 +10,15 @@
 
 @implementation LargeWaitTime
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier time:(int)time wait:(int)wait {
-    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier time:time wait:wait];
+    
+    self = [super initWithStyle:UITableViewCellStyleDefault
+                reuseIdentifier:reuseIdentifier
+                           time:time
+                           wait:wait];
     
     if (self) {
-        // configure control(s)
         float mainSize = 105.0f;
         float subSize = 11.0f;
         float padding = 15.0f;
@@ -64,7 +61,13 @@
         [self.layer addSublayer:self.triangleLayer];
         
         self.mainTextLabel.text = [NSString stringWithFormat:@"%d", self.wait];
-        self.subtitleTextLabel.text = [NSString stringWithFormat:@"Last Updated: %@", self.timeString];
+        
+        NSDate *currentTime = [NSDate date];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"HH:mm a"];
+        NSString *resultString = [dateFormatter stringFromDate: currentTime];
+        
+        self.subtitleTextLabel.text = [NSString stringWithFormat:@"Last Updated: %@", resultString];
     }
     
     return self;
