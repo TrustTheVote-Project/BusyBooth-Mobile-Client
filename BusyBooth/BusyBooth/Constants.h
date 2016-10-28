@@ -15,5 +15,6 @@
 #define APPDELEGATE (AppDelegate *)[[UIApplication sharedApplication] delegate]
 
 FOUNDATION_EXPORT NSString *const IsLoggedIn;
+FOUNDATION_EXPORT NSString *const Domain;
 
 @end

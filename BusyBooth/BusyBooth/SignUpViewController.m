@@ -18,8 +18,6 @@
 @property (strong, nonatomic) UITextField *addressField;
 @property (strong, nonatomic) UITextField *zipCodeNumberField;
 
-@property (strong, nonatomic) UIDatePicker *datePicker;
-
 @end
 
 @implementation SignUpViewController
@@ -37,16 +35,19 @@
   [logoImage setCenter:CGPointMake(width / 2, height * 2 / 7)];
   [logoImage setBackgroundColor:[UIColor clearColor]];
   [self.view addSubview:logoImage];
+    
+    UIButton *viewWaitTimeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [viewWaitTimeButton setFrame:CGRectMake(0, 0, 240, 40)];
+    [viewWaitTimeButton setTitleColor:mainColor forState:UIControlStateNormal];
+    [viewWaitTimeButton setBackgroundColor:[UIColor whiteColor]];
+    [viewWaitTimeButton setTitle:@"Sign Up" forState:UIControlStateNormal];
+    [viewWaitTimeButton setCenter:CGPointMake(width / 2, height * 6 / 7)];
+    [viewWaitTimeButton addTarget:self
+                           action:@selector(signup)
+                 forControlEvents:UIControlEventTouchUpInside];
+    viewWaitTimeButton.layer.cornerRadius = 8;
+    [self.view addSubview:viewWaitTimeButton];
 
-  UIButton *signUpButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-  [signUpButton setFrame:CGRectMake(0, 0, 50, 30)];
-  [signUpButton setTitle:@"Signup" forState:UIControlStateNormal];
-  [signUpButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-  [signUpButton setCenter:CGPointMake(width / 2, height * 11 / 14)];
-  [signUpButton addTarget:self
-                   action:@selector(signup)
-         forControlEvents:UIControlEventTouchUpInside];
-  [self.view addSubview:signUpButton];
 
   self.firstNameField = [[UITextField alloc] init];
   [self.firstNameField setFrame:CGRectMake(0, 0, 240, 30)];
@@ -68,44 +69,21 @@
   self.lastNameField.keyboardType = UIKeyboardTypeASCIICapable;
   [self.view addSubview:self.lastNameField];
 
-  self.datePicker = [[UIDatePicker alloc] init];
-  self.datePicker.datePickerMode = UIDatePickerModeDate;
-  unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
-  NSDate *now = [NSDate date];
-  NSCalendar *gregorian = [NSCalendar currentCalendar];
-  NSDateComponents *comps = [gregorian components:unitFlags fromDate:now];
-  [comps setYear:[comps year] - 17];
-  NSDate *eighteenYearsAgo = [gregorian dateFromComponents:comps];
-  [self.datePicker setMaximumDate:eighteenYearsAgo];
-  self.datePicker.date = [NSDate date];
-
   self.DOBField = [[UITextField alloc] init];
   [self.DOBField setFrame:CGRectMake(0, 0, 240, 30)];
-  [self.DOBField setPlaceholder:@"Date of Birth"];
+  [self.DOBField setPlaceholder:@"Date of Birth: MM/DD/YYYY"];
   [self.DOBField setCenter:CGPointMake(width / 2, height * 4 / 7)];
   [self.DOBField setBorderStyle:UITextBorderStyleRoundedRect];
   [self.DOBField setDelegate:self];
-  [self.DOBField setInputView:self.datePicker];
   [self.view addSubview:self.DOBField];
 
   self.addressField = [[UITextField alloc] init];
   [self.addressField setFrame:CGRectMake(0, 0, 240, 30)];
-  [self.addressField setPlaceholder:@"Street Address"];
+  [self.addressField setPlaceholder:@"Driver's License ID #"];
   [self.addressField setCenter:CGPointMake(width / 2, height * 9 / 14)];
   [self.addressField setBorderStyle:UITextBorderStyleRoundedRect];
   [self.addressField setDelegate:self];
   [self.view addSubview:self.addressField];
-
-//  UIButton *nologinButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//  [nologinButton setFrame:CGRectMake(0, 0, 0, 0)];
-//  [nologinButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//  [nologinButton setTitle:@"Continue without signup" forState:UIControlStateNormal];
-//  [nologinButton sizeToFit];
-//  [nologinButton setCenter:CGPointMake(width / 2, height * 25 / 28)];
-//  [nologinButton addTarget:self
-//                    action:@selector(noLogin)
-//          forControlEvents:UIControlEventTouchUpInside];
-//  [self.view addSubview:nologinButton];
 
   UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
       initWithTarget:self
@@ -133,12 +111,6 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
   [self animateTextField:textField up:NO];
-
-  if (textField == self.DOBField) {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"MM/dd/yy";
-    self.DOBField.text = [dateFormatter stringFromDate:self.datePicker.date];
-  }
 }
 
 - (void)animateTextField:(UITextField *)textField up:(BOOL)up {
@@ -174,12 +146,12 @@
 }
 
 - (void)signup {
-  NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-  [dateFormat setDateFormat:@"MM/dd/yyyy"];
-  NSString *dob = [dateFormat stringFromDate:self.datePicker.date];
+    
+    [SVProgressHUD showWithStatus:@"Checking Information"];
+    
   NSString *hashValue = [self sha256HashForFirstName:self.firstNameField.text
                                             lastName:self.lastNameField.text
-                                                 DOB:dob
+                                                 DOB:self.DOBField.text
                                              address:self.addressField.text];
 
   NSString *post = [NSString stringWithFormat:@"hashVal=%@", hashValue];
@@ -187,7 +159,7 @@
   NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 
-  [request setURL:[NSURL URLWithString:@"https://busy-booth-app.herokuapp.com/validate_user"]];
+    [request setURL:[NSURL URLWithString: [NSString stringWithFormat:@"%@/validate_user", Domain]]];
   [request setHTTPMethod:@"POST"];
   [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
   [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -202,8 +174,6 @@
                                                                           options:kNilOptions
                                                                             error:&error];
             
-            NSLog(@"%@", loginSuccessful);
-            
           if ([[loginSuccessful objectForKey:@"code"] integerValue] == 1) {
             dispatch_async(dispatch_get_main_queue(), ^{ [SVProgressHUD showErrorWithStatus:
                 @"Signup Failed. Please check that you have entered your information correctly."];
@@ -213,26 +183,18 @@
               NSString *address = [[loginSuccessful objectForKey:@"data"] objectForKey:@"address"];
               NSString *boothZip = [[loginSuccessful objectForKey:@"data"] objectForKey:@"zip"];
               NSString *boothID = [[loginSuccessful objectForKey:@"data"] objectForKey:@"id"];
+              NSString *isAdmin = [[loginSuccessful objectForKey:@"data"] objectForKey:@"is_admin"];
               
               [[NSUserDefaults standardUserDefaults] setObject:address forKey:@"boothAddress"];
               [[NSUserDefaults standardUserDefaults] setObject:boothZip forKey:@"boothZip"];
               [[NSUserDefaults standardUserDefaults] setObject:boothID forKey:@"boothID"];
+              [[NSUserDefaults standardUserDefaults] setObject:isAdmin forKey:@"isAdmin"];
               
             dispatch_async(dispatch_get_main_queue(), ^{
-              [SVProgressHUD showSuccessWithStatus: @"Registered Successfully! Proceeding to app."];
+                [SVProgressHUD dismiss];
+              [SVProgressHUD showWithStatus:@"Loading Booth Information"];
               [APPDELEGATE presentSWController];
             });
-
-            [[NSUserDefaults standardUserDefaults] setObject:@"YES" forKey:IsLoggedIn];
-
-            [[NSUserDefaults standardUserDefaults] setObject:self.firstNameField.text
-                                                      forKey:@"fname"];
-            [[NSUserDefaults standardUserDefaults] setObject:self.lastNameField.text
-                                                      forKey:@"lname"];
-            [[NSUserDefaults standardUserDefaults] setObject:self.DOBField.text forKey:@"dob"];
-            [[NSUserDefaults standardUserDefaults] setObject:self.addressField.text
-                                                      forKey:@"address"];
-            [[NSUserDefaults standardUserDefaults] setObject:hashValue forKey:@"hash"];
           }
         }];
   [dataTask resume];

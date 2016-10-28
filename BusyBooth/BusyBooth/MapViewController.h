@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 #import <UIKit/UIKit.h>
 
-@interface MainViewController : UIViewController<MKMapViewDelegate, CLLocationManagerDelegate>
+@interface MapViewController : UIViewController<MKMapViewDelegate, CLLocationManagerDelegate>
 
 @property(strong, nonatomic) CLLocationManager *locationManager;
 

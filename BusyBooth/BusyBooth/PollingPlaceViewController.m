@@ -18,6 +18,7 @@
 @property(nonatomic, strong) UILabel *addressLabel;
 
 @property(nonatomic, strong) UITextField *addTimeField;
+@property(nonatomic, strong) UIButton *logTimeButton;
 
 @end
 
@@ -100,23 +101,26 @@
     viewDrivingDirectionsButton.layer.cornerRadius = 8;
     [self.view addSubview:viewDrivingDirectionsButton];
     
-    UIButton *logTimeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [logTimeButton setFrame:CGRectMake(0, 0, 275, 40)];
-    [logTimeButton setTitleColor:mainColor forState:UIControlStateNormal];
-    [logTimeButton setBackgroundColor:[UIColor whiteColor]];
-    [logTimeButton setTitle:@"Submit Elapsed Time"
-                                 forState:UIControlStateNormal];
-    [logTimeButton setCenter:CGPointMake(width / 2, height * 6 / 7 + 0.6 * height / 7)];
-    [logTimeButton addTarget:self
-                                    action:@selector(submitLoggingTime)
-                          forControlEvents:UIControlEventTouchUpInside];
-    logTimeButton.layer.cornerRadius = 8;
-    [self.view addSubview:logTimeButton];
+    
+    if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"alreadySubmitted"] isEqualToString:@"true"]) {
+        self.logTimeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [self.logTimeButton setFrame:CGRectMake(0, 0, 275, 40)];
+        [self.logTimeButton setTitleColor:mainColor forState:UIControlStateNormal];
+        [self.logTimeButton setBackgroundColor:[UIColor whiteColor]];
+        [self.logTimeButton setTitle:@"Submit Elapsed Time"
+                                     forState:UIControlStateNormal];
+        [self.logTimeButton setCenter:CGPointMake(width / 2, height * 6 / 7 + 0.6 * height / 7)];
+        [self.logTimeButton addTarget:self
+                                        action:@selector(submitLoggingTime)
+                              forControlEvents:UIControlEventTouchUpInside];
+        self.logTimeButton.layer.cornerRadius = 8;
+        [self.view addSubview:self.logTimeButton];
+    }
 }
 
 - (void) submitLoggingTime {
     UIAlertView *addTime =
-    [[UIAlertView alloc] initWithTitle:@"How long did you wait at your polling place?"
+    [[UIAlertView alloc] initWithTitle:@"Approximately how many minutes did you wait in line at your polling place?"
                                message:@"NOTE: This is final and you will not be able to change your submission."
                               delegate:self
                      cancelButtonTitle:@"Cancel"
@@ -140,7 +144,7 @@
         NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
         
-        NSString *urlString = [NSString stringWithFormat:@"https://busy-booth-app.herokuapp.com/log_time/%@",
+        NSString *urlString = [NSString stringWithFormat:@"%@/log_time/%@", Domain,
                                [[NSUserDefaults standardUserDefaults] objectForKey:@"boothID"]];
         [request setURL:[NSURL URLWithString: urlString]];
         [request setHTTPMethod:@"POST"];
@@ -161,7 +165,10 @@
                        if([[dataDic objectForKey:@"code"] intValue] == 0) {
                            dispatch_async(dispatch_get_main_queue(), ^{
                                [SVProgressHUD showSuccessWithStatus: @"Your time has been recorded! \n Thank you for your contribution!"];
-                               // TODO: Make the button disappear if you aren't an admin.
+                               if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"isAdmin"] isEqualToString:@"false"]) {
+                                   [self.logTimeButton removeFromSuperview];
+                                   [[NSUserDefaults standardUserDefaults] setObject:@"true" forKey:@"alreadySubmitted"];
+                               }
                            });
                        }
                    }];
@@ -228,6 +235,8 @@
                    [allLines appendAttributedString:line4];
 
                    self.addressLabel.attributedText = allLines;
+                   
+                   [SVProgressHUD dismiss];
          }];
 }
 

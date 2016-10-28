@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "MasterTableViewController.h"
 
-#import "MainViewController.h"
+#import "MapViewController.h"
 #import "PastPollingTableViewController.h"
 #import "PollingPlaceViewController.h"
 
@@ -56,7 +56,7 @@ typedef NS_ENUM(NSUInteger, MasterTableViewRowType) {
 
   self.navigationController.navigationBar.barTintColor = mainColor;
 
-  MainViewController *mainVC = [[MainViewController alloc] init];
+  MapViewController *mainVC = [[MapViewController alloc] init];
   PollingPlaceViewController *pollVC = [[PollingPlaceViewController alloc] init];
   PastPollingTableViewController *pastVC = [[PastPollingTableViewController alloc] init];
 

@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "MasterTableViewController.h"
-#import "MainViewController.h"
+#import "MapViewController.h"
 #import "PollingPlaceViewController.h"
 #import "SignUpViewController.h"
 

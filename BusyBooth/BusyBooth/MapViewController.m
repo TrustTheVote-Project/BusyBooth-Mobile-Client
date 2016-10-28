@@ -7,79 +7,72 @@
 //
 
 #import <MapKit/MapKit.h>
-#import "BFPaperButton.h"
-#import "MainViewController.h"
+#import "MapViewController.h"
 
-@interface MainViewController ()<CLLocationManagerDelegate, MKMapViewDelegate>
+@interface MapViewController ()<CLLocationManagerDelegate, MKMapViewDelegate>
 
 @property(nonatomic, strong) CLLocation *location;
 @property(nonatomic, strong) CLLocation *destination;
 @property(nonatomic, strong) MKMapView *mapView;
 @property(nonatomic, strong) MKRoute *routeDetails;
-@property(nonatomic, strong) BFPaperButton *directionsButton;
+@property(nonatomic, strong) UIButton *directionsButton;
 
 @property(nonatomic) float latitude;
 @property(nonatomic) float longitude;
 
 @end
 
-@implementation MainViewController
+@implementation MapViewController
 
 - (id)init {
-  self = [super init];
-  if (self) {
-    self.title = @"Directions";
-  }
-  return self;
+    self = [super init];
+    if (self) {
+        self.title = @"Directions";
+    }
+    return self;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-  [super viewWillAppear:animated];
+    [super viewWillAppear:animated];
 
-  self.view.backgroundColor = [UIColor whiteColor];
-  [self.navigationController.navigationBar setTitleTextAttributes:@{
+    self.view.backgroundColor = [UIColor whiteColor];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{
     NSForegroundColorAttributeName : [UIColor whiteColor]
-  }];
+    }];
 
-  SWRevealViewController *revealController = [self revealViewController];
-  [revealController panGestureRecognizer];
-  [revealController tapGestureRecognizer];
-    
-  
+    SWRevealViewController *revealController = [self revealViewController];
+    [revealController panGestureRecognizer];
+    [revealController tapGestureRecognizer];
 
-
-  UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc]
+    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc]
       initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
               style:UIBarButtonItemStylePlain
              target:revealController
              action:@selector(revealToggle:)];
-  self.navigationItem.leftBarButtonItem = revealButtonItem;
-  self.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
-  self.navigationController.navigationBar.barTintColor = mainColor;
+    self.navigationItem.leftBarButtonItem = revealButtonItem;
+    self.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.barTintColor = mainColor;
 
-  self.locationManager = [[CLLocationManager alloc] init];
-  self.locationManager.delegate = self;
-  [self.locationManager requestAlwaysAuthorization];
-  [self.locationManager startUpdatingLocation];
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    [self.locationManager requestAlwaysAuthorization];
+    [self.locationManager startUpdatingLocation];
 
-  self.mapView = [[MKMapView alloc] initWithFrame:self.view.frame];
-  self.mapView.delegate = self;
-  self.mapView.showsUserLocation = YES;
-  [self.view addSubview:self.mapView];
-
-  self.directionsButton = [[BFPaperButton alloc]
-      initWithFrame:CGRectMake(self.view.frame.size.width - 80,
-                               self.view.frame.size.height - 80, 50, 50)
-             raised:YES];
-  [self.directionsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-  [self.directionsButton setTitleFont:[UIFont systemFontOfSize:14]];
-  self.directionsButton.backgroundColor = [UIColor colorWithRed:0.3 green:0 blue:1 alpha:1];
-  self.directionsButton.cornerRadius = self.directionsButton.frame.size.width / 2;
-  self.directionsButton.rippleFromTapLocation = NO;
-  self.directionsButton.tapCircleDiameter = MAX(self.directionsButton.frame.size.width,
-                                                self.directionsButton.frame.size.height) * 1.3;
-  [self.view addSubview:self.directionsButton];
-  [SVProgressHUD show];
+    self.mapView = [[MKMapView alloc] initWithFrame:self.view.frame];
+    self.mapView.delegate = self;
+    self.mapView.showsUserLocation = YES;
+    [self.view addSubview:self.mapView];
+    
+    self.directionsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.directionsButton setFrame:CGRectMake(0, 0, 240, 40)];
+    [self.directionsButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.directionsButton setBackgroundColor:mainColor];
+    [self.directionsButton setTitle:@"Loading..." forState:UIControlStateNormal];
+    [self.directionsButton setCenter:CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height * 6 / 7)];
+    self.directionsButton.layer.cornerRadius = 8;
+    [self.view addSubview:self.directionsButton];
+    
+    [SVProgressHUD show];
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
@@ -164,7 +157,7 @@
       self.routeDetails = response.routes.lastObject;
       [self.mapView addOverlay:self.routeDetails.polyline];
       [self.directionsButton setTitle:
-           [NSString stringWithFormat:@"%d min", (int)self.routeDetails.expectedTravelTime / 60]
+           [NSString stringWithFormat:@"%d min: Click here for directions", (int)self.routeDetails.expectedTravelTime / 60]
                              forState:UIControlStateNormal];
       [self.directionsButton addTarget:self
                                 action:@selector(openMaps)

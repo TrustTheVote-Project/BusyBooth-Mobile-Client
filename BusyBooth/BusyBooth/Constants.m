@@ -11,5 +11,6 @@
 @implementation Constants
 
 NSString *const IsLoggedIn = @"loggedIn";
+NSString *const Domain = @"http://localhost:5000";
 
 @end

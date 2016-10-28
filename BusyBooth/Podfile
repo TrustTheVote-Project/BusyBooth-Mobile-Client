@@ -3,7 +3,6 @@
 
 target 'BusyBooth' do
 
-pod 'BFPaperButton'
 pod 'SVProgressHUD'
 
 end

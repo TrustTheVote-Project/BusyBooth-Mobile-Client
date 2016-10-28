@@ -60,11 +60,11 @@
         self.triangleLayer.fillColor = [UIColor colorWithRed:229.0/255.0 green:22.0/255.0 blue:47.0/255.0 alpha:1.0].CGColor;
         [self.layer addSublayer:self.triangleLayer];
         
-        self.mainTextLabel.text = [NSString stringWithFormat:@"%d", self.wait];
+        self.mainTextLabel.text = self.wait == -1 ? @"n/a" : [NSString stringWithFormat:@"%d", self.wait];
         
         NSDate *currentTime = [NSDate date];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"HH:mm a"];
+        [dateFormatter setDateFormat:@"hh:mm a"];
         NSString *resultString = [dateFormatter stringFromDate: currentTime];
         
         self.subtitleTextLabel.text = [NSString stringWithFormat:@"Last Updated: %@", resultString];

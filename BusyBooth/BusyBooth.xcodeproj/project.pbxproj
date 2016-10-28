@@ -15,7 +15,7 @@
 		6B8DAC3C1C68792700AA6ED3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8DAC3B1C68792700AA6ED3 /* AppDelegate.m */; };
 		6B8DAC441C68792700AA6ED3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B8DAC431C68792700AA6ED3 /* Assets.xcassets */; };
 		6B8DAC501C68798F00AA6ED3 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8DAC4F1C68798F00AA6ED3 /* SWRevealViewController.m */; };
-		6B8DAC5A1C6879A500AA6ED3 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8DAC541C6879A400AA6ED3 /* MainViewController.m */; };
+		6B8DAC5A1C6879A500AA6ED3 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8DAC541C6879A400AA6ED3 /* MapViewController.m */; };
 		6B8DAC5B1C6879A500AA6ED3 /* MasterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8DAC561C6879A400AA6ED3 /* MasterTableViewController.m */; };
 		6B8DAC5C1C6879A500AA6ED3 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8DAC581C6879A500AA6ED3 /* SignUpViewController.m */; };
 		6B8DAC5E1C687A9F00AA6ED3 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B8DAC5D1C687A9F00AA6ED3 /* Default-568h@2x.png */; };
@@ -43,8 +43,8 @@
 		6B8DAC481C68792700AA6ED3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B8DAC4E1C68798F00AA6ED3 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		6B8DAC4F1C68798F00AA6ED3 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
-		6B8DAC531C6879A400AA6ED3 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
-		6B8DAC541C6879A400AA6ED3 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		6B8DAC531C6879A400AA6ED3 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		6B8DAC541C6879A400AA6ED3 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		6B8DAC551C6879A400AA6ED3 /* MasterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterTableViewController.h; sourceTree = "<group>"; };
 		6B8DAC561C6879A400AA6ED3 /* MasterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterTableViewController.m; sourceTree = "<group>"; };
 		6B8DAC571C6879A400AA6ED3 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
@@ -92,8 +92,8 @@
 			children = (
 				6B8DAC551C6879A400AA6ED3 /* MasterTableViewController.h */,
 				6B8DAC561C6879A400AA6ED3 /* MasterTableViewController.m */,
-				6B8DAC531C6879A400AA6ED3 /* MainViewController.h */,
-				6B8DAC541C6879A400AA6ED3 /* MainViewController.m */,
+				6B8DAC531C6879A400AA6ED3 /* MapViewController.h */,
+				6B8DAC541C6879A400AA6ED3 /* MapViewController.m */,
 				6B7DF8871C6FAA0400D43104 /* PollingPlaceViewController.h */,
 				6B7DF8881C6FAA0400D43104 /* PollingPlaceViewController.m */,
 				6BC770E81C7A551A004CC8D6 /* PastPollingViews */,
@@ -292,7 +292,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B8DAC5A1C6879A500AA6ED3 /* MainViewController.m in Sources */,
+				6B8DAC5A1C6879A500AA6ED3 /* MapViewController.m in Sources */,
 				6B8DAC3C1C68792700AA6ED3 /* AppDelegate.m in Sources */,
 				6B8DAC391C68792700AA6ED3 /* main.m in Sources */,
 				6B7DF8851C6F77A100D43104 /* Constants.m in Sources */,

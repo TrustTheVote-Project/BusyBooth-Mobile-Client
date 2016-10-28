@@ -140,7 +140,7 @@
     NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     
-    NSString *url = [NSString stringWithFormat:@"https://busy-booth-app.herokuapp.com/history_wait/%@",
+    NSString *url = [NSString stringWithFormat:@"%@/history_wait/%@", Domain,
                      [[NSUserDefaults standardUserDefaults] objectForKey:@"boothID"]];
 
     [request setURL:[NSURL URLWithString:url]];
