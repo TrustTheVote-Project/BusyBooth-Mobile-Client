@@ -1,7 +1,6 @@
 //
 //  PastPollingTableViewController.m
 //  
-//
 //  Created by Krishna Bharathala on 2/21/16.
 //
 //
@@ -85,8 +84,6 @@
     int time = 60;
     int wait = 0;
     
-    // NSLog(@"%@", self.hours_array);
-    
     if(indexPath.row != 0) {
         long i = indexPath.row - 1;
         if(i < self.hours_array.count) {
@@ -159,8 +156,8 @@
 
             if([[hours objectForKey:@"code"] integerValue] == 0) {
                 self.hours_array = [hours objectForKey:@"data"];
-                [self.tableView reloadData];
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
                     [SVProgressHUD dismiss];
                 });
             } else {

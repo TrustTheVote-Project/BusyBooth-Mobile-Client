@@ -66,9 +66,4 @@
     [self.navController pushViewController:signupVC animated:YES];
 }
 
-- (void)logOut {
-    [self presentSignUpViewController];
-    [[NSUserDefaults standardUserDefaults] setObject:@"false" forKey:IsLoggedIn];
-}
-
 @end

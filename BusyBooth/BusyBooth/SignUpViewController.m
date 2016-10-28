@@ -15,8 +15,7 @@
 @property (strong, nonatomic) UITextField *firstNameField;
 @property (strong, nonatomic) UITextField *lastNameField;
 @property (strong, nonatomic) UITextField *DOBField;
-@property (strong, nonatomic) UITextField *addressField;
-@property (strong, nonatomic) UITextField *zipCodeNumberField;
+@property (strong, nonatomic) UITextField *licenseField;
 
 @end
 
@@ -77,13 +76,13 @@
   [self.DOBField setDelegate:self];
   [self.view addSubview:self.DOBField];
 
-  self.addressField = [[UITextField alloc] init];
-  [self.addressField setFrame:CGRectMake(0, 0, 240, 30)];
-  [self.addressField setPlaceholder:@"Driver's License ID #"];
-  [self.addressField setCenter:CGPointMake(width / 2, height * 9 / 14)];
-  [self.addressField setBorderStyle:UITextBorderStyleRoundedRect];
-  [self.addressField setDelegate:self];
-  [self.view addSubview:self.addressField];
+  self.licenseField = [[UITextField alloc] init];
+  [self.licenseField setFrame:CGRectMake(0, 0, 240, 30)];
+  [self.licenseField setPlaceholder:@"Driver's License ID #"];
+  [self.licenseField setCenter:CGPointMake(width / 2, height * 9 / 14)];
+  [self.licenseField setBorderStyle:UITextBorderStyleRoundedRect];
+  [self.licenseField setDelegate:self];
+  [self.view addSubview:self.licenseField];
 
   UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
       initWithTarget:self
@@ -96,8 +95,7 @@
     [self.firstNameField resignFirstResponder];
     [self.lastNameField resignFirstResponder];
     [self.DOBField resignFirstResponder];
-    [self.addressField resignFirstResponder];
-    [self.zipCodeNumberField resignFirstResponder];
+    [self.licenseField resignFirstResponder];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -129,16 +127,18 @@
 - (NSString *)sha256HashForFirstName:(NSString *)fName
                             lastName:(NSString *)lName
                                  DOB:(NSString *)DOB
-                             address:(NSString *)address {
+                             license:(NSString *)license {
     
-  NSString *number = [[address componentsSeparatedByString:@" "] firstObject];
-  const char *str = [[NSString stringWithFormat:@"%@%@%@%@", fName, lName, DOB, number] UTF8String];
-    NSLog(@"%s", str);
+    
+    NSString *fName_string = [fName length] < 3 ? @"" : [[fName substringToIndex:3] capitalizedString];
+    
+  NSString *lic = [fName length] < 4 ? @"" : [license substringToIndex:4];
+  const char *str = [[NSString stringWithFormat:@"%@%@%@", fName_string, DOB, lic] UTF8String];
+    
   unsigned char result[CC_SHA256_DIGEST_LENGTH];
   CC_SHA256(str, strlen(str), result);
 
-  NSMutableString *ret =
-      [NSMutableString stringWithCapacity:CC_SHA256_DIGEST_LENGTH * 2];
+  NSMutableString *ret = [NSMutableString stringWithCapacity:CC_SHA256_DIGEST_LENGTH * 2];
   for (int i = 0; i < CC_SHA256_DIGEST_LENGTH; i++) {
     [ret appendFormat:@"%02x", result[i]];
   }
@@ -152,7 +152,7 @@
   NSString *hashValue = [self sha256HashForFirstName:self.firstNameField.text
                                             lastName:self.lastNameField.text
                                                  DOB:self.DOBField.text
-                                             address:self.addressField.text];
+                                             license:self.licenseField.text];
 
   NSString *post = [NSString stringWithFormat:@"hashVal=%@", hashValue];
   NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -174,6 +174,8 @@
                                                                           options:kNilOptions
                                                                             error:&error];
             
+            NSLog(@"%@", loginSuccessful);
+            
           if ([[loginSuccessful objectForKey:@"code"] integerValue] == 1) {
             dispatch_async(dispatch_get_main_queue(), ^{ [SVProgressHUD showErrorWithStatus:
                 @"Signup Failed. Please check that you have entered your information correctly."];
@@ -181,12 +183,10 @@
 
           } else {
               NSString *address = [[loginSuccessful objectForKey:@"data"] objectForKey:@"address"];
-              NSString *boothZip = [[loginSuccessful objectForKey:@"data"] objectForKey:@"zip"];
               NSString *boothID = [[loginSuccessful objectForKey:@"data"] objectForKey:@"id"];
               NSString *isAdmin = [[loginSuccessful objectForKey:@"data"] objectForKey:@"is_admin"];
               
               [[NSUserDefaults standardUserDefaults] setObject:address forKey:@"boothAddress"];
-              [[NSUserDefaults standardUserDefaults] setObject:boothZip forKey:@"boothZip"];
               [[NSUserDefaults standardUserDefaults] setObject:boothID forKey:@"boothID"];
               [[NSUserDefaults standardUserDefaults] setObject:isAdmin forKey:@"isAdmin"];
               

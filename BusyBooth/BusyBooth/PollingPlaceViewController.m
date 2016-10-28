@@ -138,7 +138,6 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
         
-        NSLog(@"%@", self.addTimeField.text);
         NSString *post = [NSString stringWithFormat:@"elapsed=%@", self.addTimeField.text];
         NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
@@ -161,7 +160,6 @@
                        NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:data
                                                                                options:kNilOptions
                                                                                  error:&error];
-                       NSLog(@"%@", dataDic);
                        if([[dataDic objectForKey:@"code"] intValue] == 0) {
                            dispatch_async(dispatch_get_main_queue(), ^{
                                [SVProgressHUD showSuccessWithStatus: @"Your time has been recorded! \n Thank you for your contribution!"];
@@ -181,16 +179,12 @@
 - (void)updateAddressLabel {
     
   NSString *address = [[NSUserDefaults standardUserDefaults] objectForKey:@"boothAddress"];
-  int zip = [[[NSUserDefaults standardUserDefaults] objectForKey:@"boothZip"] intValue];
 
   CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-  [geocoder geocodeAddressString:[NSString stringWithFormat:@"%@ %i", address, zip]
+  [geocoder geocodeAddressString:[NSString stringWithFormat:@"%@", address]
                completionHandler:^(NSArray *placemarks, NSError *error) {
 
                    CLPlacemark *p = [placemarks firstObject];
-                   NSLog(@"%@", p.subLocality);
-                   NSLog(@"%@", p.addressDictionary);
-                   NSLog(@"%@", p.postalCode);
 
                    NSDictionary *attrs1 = @{
                                             NSFontAttributeName :

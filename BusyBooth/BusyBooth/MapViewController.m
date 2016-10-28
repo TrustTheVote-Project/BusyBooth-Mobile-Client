@@ -96,10 +96,9 @@
 
 - (void)getDestination {
   NSString *address = [[NSUserDefaults standardUserDefaults] objectForKey:@"boothAddress"];
-  int zip = [[[NSUserDefaults standardUserDefaults] objectForKey:@"boothZip"] intValue];
 
   CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-  [geocoder geocodeAddressString:[NSString stringWithFormat:@"%@ %i", address, zip]
+  [geocoder geocodeAddressString:address
                completionHandler:^(NSArray *placemarks, NSError *error) {
                    CLPlacemark *p = [placemarks firstObject];
                    self.destination = [p location];

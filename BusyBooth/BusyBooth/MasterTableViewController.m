@@ -62,7 +62,7 @@ typedef NS_ENUM(NSUInteger, MasterTableViewRowType) {
 
   pollVC.masterVC = self;
 
-  self.viewControllerArray = @[ pollVC, mainVC, pastVC];
+  self.viewControllerArray = @[pollVC, mainVC, pastVC];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell
@@ -90,25 +90,21 @@ typedef NS_ENUM(NSUInteger, MasterTableViewRowType) {
   return MasterTableViewRowTypeCount;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView
-         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *cellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                      reuseIdentifier:cellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
     }
 
     if (indexPath.row < MasterTableViewRowTypeCount) {
         UIViewController *currViewController = [self.viewControllerArray objectAtIndex:indexPath.row];
         cell.textLabel.text = currViewController.title;
     }
-    if (indexPath.row == self.currRow) {
-        cell.contentView.backgroundColor = [UIColor lightGrayColor];
-    } else {
-        cell.contentView.backgroundColor = [UIColor whiteColor];
-    }
+    
+    cell.contentView.backgroundColor =
+        indexPath.row == self.currRow ? [UIColor lightGrayColor] : [UIColor whiteColor];
 
   return cell;
 }
@@ -119,10 +115,6 @@ typedef NS_ENUM(NSUInteger, MasterTableViewRowType) {
   if (indexPath.row == self.currRow) {
     [revealController setFrontViewPosition:FrontViewPositionLeft animated:YES];
     return;
-  } else if (![[[NSUserDefaults standardUserDefaults] objectForKey:IsLoggedIn] boolValue] &&
-             indexPath.row == 3) {
-    [APPDELEGATE logOut];
-    [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:IsLoggedIn];
   } else if (indexPath.row < MasterTableViewRowTypeCount) {
     UIViewController *newFrontController =
         [self.viewControllerArray objectAtIndex:indexPath.row];

@@ -13,6 +13,5 @@
 @property (strong, nonatomic) UIWindow *window;
 
 - (void)presentSWController;
-- (void)logOut;
 
 @end
