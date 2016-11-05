@@ -102,7 +102,8 @@
     [self.view addSubview:viewDrivingDirectionsButton];
     
     
-    if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"alreadySubmitted"] isEqualToString:@"true"]) {
+    if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"alreadySubmitted"] isEqualToString:@"true"] &&
+        [[[NSUserDefaults standardUserDefaults] objectForKey:@"isRegistered"] isEqualToString:@"True"]) {
         self.logTimeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [self.logTimeButton setFrame:CGRectMake(0, 0, 275, 40)];
         [self.logTimeButton setTitleColor:mainColor forState:UIControlStateNormal];

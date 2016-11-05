@@ -6,7 +6,6 @@
 //  Copyright © 2015 Krishna Bharathala. All rights reserved.
 //
 
-#import <MapKit/MapKit.h>
 #import "MapViewController.h"
 
 @interface MapViewController ()<CLLocationManagerDelegate, MKMapViewDelegate>
@@ -16,6 +15,7 @@
 @property(nonatomic, strong) MKMapView *mapView;
 @property(nonatomic, strong) MKRoute *routeDetails;
 @property(nonatomic, strong) UIButton *directionsButton;
+@property(strong, nonatomic) CLLocationManager *locationManager;
 
 @property(nonatomic) float latitude;
 @property(nonatomic) float longitude;
@@ -55,7 +55,7 @@
 
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
-    [self.locationManager requestAlwaysAuthorization];
+    [self.locationManager requestWhenInUseAuthorization];
     [self.locationManager startUpdatingLocation];
 
     self.mapView = [[MKMapView alloc] initWithFrame:self.view.frame];
