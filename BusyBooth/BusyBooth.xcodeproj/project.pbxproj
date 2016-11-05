@@ -13,7 +13,6 @@
 		6B7DF8891C6FAA0400D43104 /* PollingPlaceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B7DF8881C6FAA0400D43104 /* PollingPlaceViewController.m */; };
 		6B8DAC391C68792700AA6ED3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8DAC381C68792700AA6ED3 /* main.m */; };
 		6B8DAC3C1C68792700AA6ED3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8DAC3B1C68792700AA6ED3 /* AppDelegate.m */; };
-		6B8DAC441C68792700AA6ED3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B8DAC431C68792700AA6ED3 /* Assets.xcassets */; };
 		6B8DAC501C68798F00AA6ED3 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8DAC4F1C68798F00AA6ED3 /* SWRevealViewController.m */; };
 		6B8DAC5A1C6879A500AA6ED3 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8DAC541C6879A400AA6ED3 /* MapViewController.m */; };
 		6B8DAC5B1C6879A500AA6ED3 /* MasterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8DAC561C6879A400AA6ED3 /* MasterTableViewController.m */; };
@@ -21,6 +20,8 @@
 		6B8DAC5E1C687A9F00AA6ED3 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B8DAC5D1C687A9F00AA6ED3 /* Default-568h@2x.png */; };
 		6BC770E71C7A4CAC004CC8D6 /* PastPollingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BC770E61C7A4CAC004CC8D6 /* PastPollingTableViewController.m */; };
 		6BC770F41C7A55DC004CC8D6 /* WaitTimeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BC770F31C7A55DC004CC8D6 /* WaitTimeTableViewCell.m */; };
+		6BCA50371DCD8BA7008A6BC7 /* PollingBoothTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BCA50361DCD8BA7008A6BC7 /* PollingBoothTableViewController.m */; };
+		6BCA50391DCDA22F008A6BC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6BCA50381DCDA22F008A6BC7 /* Assets.xcassets */; };
 		8A6AF71E6732C053F602ED41 /* libPods-BusyBooth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 820B57C80CBC0E32C6083A61 /* libPods-BusyBooth.a */; };
 /* End PBXBuildFile section */
 
@@ -39,7 +40,6 @@
 		6B8DAC381C68792700AA6ED3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6B8DAC3A1C68792700AA6ED3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6B8DAC3B1C68792700AA6ED3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		6B8DAC431C68792700AA6ED3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6B8DAC481C68792700AA6ED3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B8DAC4E1C68798F00AA6ED3 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		6B8DAC4F1C68798F00AA6ED3 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
@@ -54,6 +54,9 @@
 		6BC770E61C7A4CAC004CC8D6 /* PastPollingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PastPollingTableViewController.m; sourceTree = "<group>"; };
 		6BC770F21C7A55DC004CC8D6 /* WaitTimeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaitTimeTableViewCell.h; sourceTree = "<group>"; };
 		6BC770F31C7A55DC004CC8D6 /* WaitTimeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaitTimeTableViewCell.m; sourceTree = "<group>"; };
+		6BCA50351DCD8BA7008A6BC7 /* PollingBoothTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollingBoothTableViewController.h; sourceTree = "<group>"; };
+		6BCA50361DCD8BA7008A6BC7 /* PollingBoothTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollingBoothTableViewController.m; sourceTree = "<group>"; };
+		6BCA50381DCDA22F008A6BC7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		820B57C80CBC0E32C6083A61 /* libPods-BusyBooth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BusyBooth.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEB09FD9F71038E172829AC5 /* Pods-BusyBooth.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BusyBooth.release.xcconfig"; path = "Pods/Target Support Files/Pods-BusyBooth/Pods-BusyBooth.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -94,6 +97,8 @@
 				6B8DAC561C6879A400AA6ED3 /* MasterTableViewController.m */,
 				6B8DAC531C6879A400AA6ED3 /* MapViewController.h */,
 				6B8DAC541C6879A400AA6ED3 /* MapViewController.m */,
+				6BCA50351DCD8BA7008A6BC7 /* PollingBoothTableViewController.h */,
+				6BCA50361DCD8BA7008A6BC7 /* PollingBoothTableViewController.m */,
 				6B7DF8871C6FAA0400D43104 /* PollingPlaceViewController.h */,
 				6B7DF8881C6FAA0400D43104 /* PollingPlaceViewController.m */,
 				6BC770E81C7A551A004CC8D6 /* PastPollingViews */,
@@ -125,9 +130,9 @@
 			children = (
 				6B8DAC3A1C68792700AA6ED3 /* AppDelegate.h */,
 				6B8DAC3B1C68792700AA6ED3 /* AppDelegate.m */,
+				6BCA50381DCDA22F008A6BC7 /* Assets.xcassets */,
 				6B7DF88D1C6FAD3500D43104 /* Sign Up */,
 				6B7DF88E1C6FAD4800D43104 /* Main */,
-				6B8DAC431C68792700AA6ED3 /* Assets.xcassets */,
 				6B8DAC481C68792700AA6ED3 /* Info.plist */,
 				6B8DAC371C68792700AA6ED3 /* Supporting Files */,
 			);
@@ -232,7 +237,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B8DAC441C68792700AA6ED3 /* Assets.xcassets in Resources */,
+				6BCA50391DCDA22F008A6BC7 /* Assets.xcassets in Resources */,
 				6B8DAC5E1C687A9F00AA6ED3 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -294,6 +299,7 @@
 			files = (
 				6B8DAC5A1C6879A500AA6ED3 /* MapViewController.m in Sources */,
 				6B8DAC3C1C68792700AA6ED3 /* AppDelegate.m in Sources */,
+				6BCA50371DCD8BA7008A6BC7 /* PollingBoothTableViewController.m in Sources */,
 				6B8DAC391C68792700AA6ED3 /* main.m in Sources */,
 				6B7DF8851C6F77A100D43104 /* Constants.m in Sources */,
 				6B8DAC501C68798F00AA6ED3 /* SWRevealViewController.m in Sources */,

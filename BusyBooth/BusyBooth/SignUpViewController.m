@@ -9,6 +9,7 @@
 #include <CommonCrypto/CommonDigest.h>
 #import "AppDelegate.h"
 #import "SignUpViewController.h"
+#import "PollingBoothTableViewController.h"
 
 @interface SignUpViewController ()
 
@@ -208,7 +209,8 @@
         [[NSUserDefaults standardUserDefaults] setObject:@"False" forKey:@"isRegistered"];
         dispatch_async(dispatch_get_main_queue(), ^{
             [SVProgressHUD showWithStatus:@"Proceeding"];
-            [APPDELEGATE presentSWController];
+            PollingBoothTableViewController *pollingboothVC = [[PollingBoothTableViewController alloc] init];
+            [self presentViewController:pollingboothVC animated:YES completion:nil];
         });
     }
 }

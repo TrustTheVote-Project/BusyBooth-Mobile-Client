@@ -11,6 +11,7 @@
 @implementation Constants
 
 NSString *const IsLoggedIn = @"loggedIn";
-NSString *const Domain = @"https://busy-booth-app.herokuapp.com";
+//NSString *const Domain = @"https://busy-booth-app.herokuapp.com";
+NSString *const Domain = @"http://localhost:5000";
 
 @end
