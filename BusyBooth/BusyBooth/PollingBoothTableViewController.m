@@ -99,7 +99,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 -(void)updateTable {
     NSString *post = [NSString stringWithFormat:@"zip=%d", self.zipcode];
-    NSLog(@"%@", post);
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -120,12 +119,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
                    NSDictionary *dataDic = [NSJSONSerialization JSONObjectWithData:data
                                                                            options:kNilOptions
                                                                              error:&error];
-                   NSLog(@"%@", dataDic);
                    if([[dataDic objectForKey:@"code"] intValue] == 0) {
                        NSMutableArray *addressArray = [dataDic objectForKey:@"data"];
                        if ([addressArray count] == 0) {
-                           [SVProgressHUD dismiss];
-                           [SVProgressHUD showErrorWithStatus:@"Can't find a voting booth in your area."];
+                           dispatch_async(dispatch_get_main_queue(), ^{
+                               [SVProgressHUD showErrorWithStatus:@"Can't find a voting booth in your area."];
+                               [self dismissViewControllerAnimated:YES completion:nil];
+                           });
                        } else {
                            self.addressArray = addressArray;
                            dispatch_async(dispatch_get_main_queue(), ^{

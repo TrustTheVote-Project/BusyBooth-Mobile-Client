@@ -30,8 +30,8 @@
   CGFloat height = self.view.frame.size.height;
 
   UIImageView *logoImage = [[UIImageView alloc]
-      initWithImage:[UIImage imageNamed:@"Oset_Logo2.png"]];
-  [logoImage setFrame:CGRectMake(0, 0, 150, 150)];
+      initWithImage:[UIImage imageNamed:@"logo2.png"]];
+  [logoImage setFrame:CGRectMake(0, 0, 250, 250)];
   [logoImage setCenter:CGPointMake(width / 2, height * 2 / 7)];
   [logoImage setBackgroundColor:[UIColor clearColor]];
   [self.view addSubview:logoImage];
@@ -259,8 +259,6 @@
               NSDictionary *loginSuccessful = [NSJSONSerialization JSONObjectWithData:data
                                                                               options:kNilOptions
                                                                                 error:&error];
-                
-                NSLog(@"%@", loginSuccessful);
                 
               if ([[loginSuccessful objectForKey:@"code"] integerValue] == 1) {
                 dispatch_async(dispatch_get_main_queue(), ^{ [SVProgressHUD showErrorWithStatus:
